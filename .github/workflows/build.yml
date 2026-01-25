@@ -1,5 +1,18 @@
-on: [push, pull_request, workflow_dispatch]
+name: Build ZMK firmware
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main", "master" ]
 
 jobs:
   build:
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build firmware
+        uses: zmkfirmware/zmk-build-action@v1
+        with:
+          board: nice_nano_v2     # must match a supported board
+          shield: wk360_left      # must match the shield folder in config
